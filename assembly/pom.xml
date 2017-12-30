@@ -24,7 +24,7 @@
     <parent>
         <groupId>org.apache.karaf</groupId>
         <artifactId>cave</artifactId>
-        <version>4.1.0-SNAPSHOT</version>
+        <version>4.1.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
 
@@ -80,12 +80,12 @@
                                 <descriptor>file:${project.build.directory}/classes/features.xml</descriptor>
                             </descriptors>
                             <distribution>org.apache.karaf.features:framework</distribution>
-                            <javase>1.7</javase>
+                            <javase>1.8</javase>
                             <framework>
                                 <feature>framework</feature>
                             </framework>
                             <features>
-                                <feature>cave-*</feature>
+                                <feature>!cave-rest</feature>
                             </features>
                             <verifyTransitive>false</verifyTransitive>
                         </configuration>

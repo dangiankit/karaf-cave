@@ -68,7 +68,11 @@ public class Utils {
          *
          * @param   properties a Properties object containing key-element pairs.
          */
+<<<<<<< HEAD
         public Authorizer (Properties properties) {
+=======
+        public Authorizer(Properties properties) {
+>>>>>>> upstream/master
             this.properties = properties;
         }
 
@@ -124,6 +128,12 @@ public class Utils {
          * @return  <code>true</code> iff the Authorization keys are present.
          */
         private boolean containsAuthorizationKeys() {
+<<<<<<< HEAD
+=======
+            if (properties == null) {
+                return false;
+            }
+>>>>>>> upstream/master
             return properties.containsKey(HTTP_USERNAME) && properties.containsKey(HTTP_PASSWORD);
         }
 

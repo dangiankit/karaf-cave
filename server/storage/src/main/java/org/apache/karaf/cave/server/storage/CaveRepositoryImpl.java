@@ -311,12 +311,21 @@ public class CaveRepositoryImpl implements CaveRepository {
 
     private ResourceImpl createResource(URL url) throws BundleException, IOException, NoSuchAlgorithmException {
         return createResource(url.openConnection());
+<<<<<<< HEAD
     }
 
     private ResourceImpl createResource(URLConnection urlConnection) throws BundleException, IOException, NoSuchAlgorithmException {
         return createResource(urlConnection, urlConnection.getURL().toExternalForm(), true);
     }
 
+=======
+    }
+
+    private ResourceImpl createResource(URLConnection urlConnection) throws BundleException, IOException, NoSuchAlgorithmException {
+        return createResource(urlConnection, urlConnection.getURL().toExternalForm(), true);
+    }
+
+>>>>>>> upstream/master
     private ResourceImpl createResource(URLConnection urlConnection, String uri, boolean readFully) throws BundleException, IOException, NoSuchAlgorithmException {
         Map<String, String> headers = null;
         String digest = null;
@@ -447,6 +456,7 @@ public class CaveRepositoryImpl implements CaveRepository {
                 }
             } else {
                 // try to find link to "browse"
+<<<<<<< HEAD
                 try {
                     Connection jConn = Jsoup.connect(url);
                     Document document = (new Utils.Authorizer(properties)).authorize(jConn).get();
@@ -455,9 +465,17 @@ public class CaveRepositoryImpl implements CaveRepository {
                         if (absoluteHref.startsWith(url)) {
                             proxyHttp(absoluteHref, filter, properties, resources);
                         }
+=======
+                if (!url.endsWith("/")) {
+                    url = url + "/";
+                }
+                Document document = Jsoup.parse(is, "UTF-8", url);
+                for (Element link : document.select("a")) {
+                    if (!link.attr("href").startsWith(".")) {
+                        String absoluteHref = link.attr("abs:href");
+                        proxyHttp(absoluteHref, filter, properties, resources);
+>>>>>>> upstream/master
                     }
-                } catch (UnsupportedMimeTypeException e) {
-                    // ignore
                 }
             }
         }
@@ -571,13 +589,18 @@ public class CaveRepositoryImpl implements CaveRepository {
             if ("application/java-archive".equals(type)
                     || "application/x-java-archive".equals(type)
                     || "application/octet-stream".equals(type)
-                    || "application/vnd.osgi.bundle".equals(type)) {
+                    || "application/vnd.osgi.bundle".equals(type)
+                    || "application/xml".equals(type)
+                    || "application/json".equals(type)) {
                 try {
                     if ((filter == null) || (url.matches(filter))) {
                         // Make sure this is a valid bundle
                         URLConnection urlConnection = (URLConnection) new URL(url).openConnection();
                         urlConnection = (new Utils.Authorizer(properties)).authorize(urlConnection);
+<<<<<<< HEAD
                         ResourceImpl resource = createResource(urlConnection);
+=======
+>>>>>>> upstream/master
                         LOGGER.debug("Copy {} into the Cave repository storage", url);
                         int index = url.lastIndexOf("/");
                         if (index > 0) {
@@ -586,6 +609,7 @@ public class CaveRepositoryImpl implements CaveRepository {
                         Path destination = getLocationPath().resolve(url);
                         Files.copy(is, destination);
                         if (update) {
+                            ResourceImpl resource = createResource(urlConnection);
                             resource = createResource(destination.toUri().toURL());
                             LOGGER.debug("Update repository metadata with {}-{}", ResolverUtil.getSymbolicName(resource), ResolverUtil.getVersion(resource));
                             resources.add(resource);
@@ -596,10 +620,18 @@ public class CaveRepositoryImpl implements CaveRepository {
                 }
             } else {
                 // try to find link to "browse"
+                if (!url.endsWith("/")) {
+                    url = url + "/";
+                }
                 Document document = Jsoup.parse(is, "UTF-8", url);
                 for (Element link : document.select("a")) {
+<<<<<<< HEAD
                     String absoluteHref = link.attr("abs:href");
                     if (absoluteHref.startsWith(url)) {
+=======
+                    if (!link.attr("href").startsWith(".")) {
+                        String absoluteHref = link.attr("abs:href");
+>>>>>>> upstream/master
                         populateFromHttp(absoluteHref, filter, properties, update, resources);
                     }
                 }
